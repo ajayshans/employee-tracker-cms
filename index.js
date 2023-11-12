@@ -5,8 +5,6 @@ const inquirer = require('inquirer');
 const queries = require('./utils/queries.js')
 require('console.table');
 
-
-// Required:
 // viewAllDepartments
 async function viewAllDepartments() {
     const departments = await queries.getAllDepartments();
@@ -19,12 +17,14 @@ async function viewAllRoles() {
     console.table(roles);
     init();
 };
+
 // viewAllEmployees
 async function viewAllEmployees() {
     const employees = await queries.getAllEmployees();
     console.table(employees);
     init();
 };
+
 // addDepartment
 async function addDepartment() {
     const subAnswer = await inquirer.prompt({
@@ -37,6 +37,7 @@ async function addDepartment() {
     console.log(`New department, ${subAnswer.newDepartment}, succesfully added to department table`);
     init();
 };
+
 // addRole
 async function addRole() {
     const departmentOptions = await queries.listAllDepartments();
@@ -61,6 +62,7 @@ async function addRole() {
     console.log(`New role and details for ${roleSubAnswer.title} succesfully added to role table`);
     init();
 };
+
 // addEmployee
 async function addEmployee() {
     const roleOptions = await queries.listAllRoles();

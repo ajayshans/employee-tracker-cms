@@ -55,7 +55,7 @@ async function listAllRoles() {
 
 async function getAllEmployees() {
     try {
-        const [rows] = await db.promise().query(`SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary FROM employee LEFT JOIN role ON role.id = employee.role_id LEFT JOIN department ON role.department_id = department.id`);
+        const [rows] = await db.promise().query(`SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee LEFT JOIN role ON role.id = employee.role_id LEFT JOIN department ON role.department_id = department.id LEFT JOIN employee AS manager ON employee.manager_id = manager.id`);
         return rows;
     } catch (error) {
         console.error('Error fetching employees:', error);
@@ -103,8 +103,13 @@ async function createNewEmployee(first_name, last_name, role, manager) {
     try {
         const role_data = await db.promise().query(`SELECT id FROM role WHERE title = ?`, role);
         const role_id = role_data[0][0].id;
-        const manager_data = await db.promise().query(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = ?`, manager);
-        const manager_id = manager_data[0].id;
+        var manager_id
+        if (manager === 'None') {
+            manager_id = null
+        } else {
+            const manager_data = await db.promise().query(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = ?`, manager);
+            manager_id = manager_data[0][0].id;
+        };
         await db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, [first_name, last_name, role_id, manager_id]);
     } catch (error) {
         console.error(`Error adding new employee, ${first_name} ${last_name}:`, error);
