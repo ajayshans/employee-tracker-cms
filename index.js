@@ -39,8 +39,27 @@ async function addDepartment() {
 };
 // addRole
 async function addRole() {
-    const departments = await queries.getAllDepartments();
-    console.log(departments);
+    const departmentOptions = await queries.listAllDepartments();
+    const roleSubAnswer = await inquirer.prompt([{
+        name: 'title',
+        type: 'input',
+        message: 'What is the name of the role?'
+    },
+    {
+        name: 'salary',
+        type: 'input',
+        message: 'What is the salary of the role?'
+    },
+    {
+        name: 'department',
+        type: 'list',
+        message: 'Which department does the role belong to?',
+        choices: departmentOptions
+    }]);
+
+    await queries.createNewRole(roleSubAnswer.title, roleSubAnswer.salary, roleSubAnswer.department);
+    console.log(`New role and details for ${roleSubAnswer.title} succesfully added to role table`);
+    init();
 };
 // addEmployee
 async function addEmployee() {

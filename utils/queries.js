@@ -11,6 +11,22 @@ async function getAllDepartments() {
     }
 };
 
+async function listAllDepartments() {
+    try {
+        const data = await db.promise().query(`SELECT name FROM department`);
+        const departmentsObject = data[0];
+
+        const departmentOptions = [];
+        for (let i = 0; i < departmentsObject.length; i++) {
+            departmentOptions.push(departmentsObject[i].name);
+        }
+        return departmentOptions;
+    } catch (error) {
+        console.error('Error fetching list of departments:', error);
+        throw error;
+    }
+};
+
 async function getAllRoles() {
     try {
         const [rows] = await db.promise().query(`SELECT role.id, role.title, department.name AS department, role.salary FROM role LEFT JOIN department ON department.id = role.department_id`);
@@ -40,6 +56,17 @@ async function createNewDepartment(department) {
     }
 };
 
+async function createNewRole(title, salary, department) {
+    try {
+        const data = await db.promise().query(`SELECT id FROM department WHERE name = ?`, department);
+        const dep_id = data[0][0].id;
+        await db.promise().query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, [title, salary, dep_id]);
+    } catch (error) {
+        console.error(`Error adding new role, ${title}:`, error);
+        throw error;
+    }
+};
+
 // TODO: Define other async functions for roles, employees, etc
 
 
@@ -47,6 +74,8 @@ module.exports = {
     getAllDepartments,
     getAllRoles,
     getAllEmployees,
+    listAllDepartments,
     createNewDepartment,
+    createNewRole,
     // TODO: Other async functions for roles, employees, etc
 }
