@@ -11,11 +11,13 @@ require('console.table');
 async function viewAllDepartments() {
     const departments = await queries.getAllDepartments();
     console.table(departments);
+    init();
 };
 // viewAllRoles
 async function viewAllRoles() {
-    const departments = await queries.getAllDepartments();
-    console.log(departments);
+    const roles = await queries.getAllRoles();
+    console.table(roles);
+    init();
 };
 // viewAllEmployees
 async function viewAllEmployees() {
@@ -68,7 +70,8 @@ async function init() {
             'Add a department',
             'Add a role',
             'Add an employee',
-            'Update an employee role'
+            'Update an employee role',
+            'Exit Application',
         ]
     });
 
@@ -94,6 +97,9 @@ async function init() {
         case 'Update an employee role':
             await updateEmployeeRole();
             break;
+        case 'Exit Application':
+            console.log('Goodbye :)')
+            process.exit();
     }
 }
 
