@@ -100,13 +100,14 @@ async function createNewRole(title, salary, department) {
 };
 
 async function createNewEmployee(first_name, last_name, role, manager) {
-    // TODO: Amend everything below
     try {
-        const data = await db.promise().query(`SELECT id FROM department WHERE name = ?`, department);
-        const dep_id = data[0][0].id;
-        await db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?)`, [title, salary, dep_id]);
+        const role_data = await db.promise().query(`SELECT id FROM role WHERE title = ?`, role);
+        const role_id = role_data[0][0].id;
+        const manager_data = await db.promise().query(`SELECT id FROM employee WHERE CONCAT(first_name, ' ', last_name) = ?`, manager);
+        const manager_id = manager_data[0].id;
+        await db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, [first_name, last_name, role_id, manager_id]);
     } catch (error) {
-        console.error(`Error adding new role, ${title}:`, error);
+        console.error(`Error adding new employee, ${first_name} ${last_name}:`, error);
         throw error;
     }
 };

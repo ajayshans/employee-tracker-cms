@@ -88,8 +88,8 @@ async function addEmployee() {
         choices: managerOptions
     }]);
 
-    await queries.createNewEmployee(employeeSubAnswer.first_name, employeeSubAnswer.last_name, employeeSubAnswer.role, employeeSubAnswer.manager);
-    console.log(`New employee and details for ${employeeSubAnswer.first_name} ${employeeSubAnswer.last_name} succesfully added to role table`);
+    await queries.createNewEmployee(employeeSubAnswer.firstName, employeeSubAnswer.lastName, employeeSubAnswer.role, employeeSubAnswer.manager);
+    console.log(`New employee and details for ${employeeSubAnswer.firstName} ${employeeSubAnswer.lastName} succesfully added to employee table`);
     init();
 };
 
