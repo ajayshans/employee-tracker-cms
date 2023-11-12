@@ -37,12 +37,44 @@ async function getAllRoles() {
     }
 };
 
+async function listAllRoles() {
+    try {
+        const data = await db.promise().query(`SELECT title FROM role`);
+        const rolesObject = data[0];
+
+        const roleOptions = [];
+        for (let i = 0; i < rolesObject.length; i++) {
+            roleOptions.push(rolesObject[i].title);
+        }
+        return roleOptions;
+    } catch (error) {
+        console.error('Error fetching list of roles:', error);
+        throw error;
+    }
+};
+
 async function getAllEmployees() {
     try {
         const [rows] = await db.promise().query(`SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary FROM employee LEFT JOIN role ON role.id = employee.role_id LEFT JOIN department ON role.department_id = department.id`);
         return rows;
     } catch (error) {
         console.error('Error fetching employees:', error);
+        throw error;
+    }
+};
+
+async function listAllEmployees() {
+    try {
+        const data = await db.promise().query(`SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM employee`);
+        const employeesObject = data[0];
+
+        const employeeOptions = ['None'];
+        for (let i = 0; i < employeesObject.length; i++) {
+            employeeOptions.push(employeesObject[i].full_name);
+        }
+        return employeeOptions;
+    } catch (error) {
+        console.error('Error fetching list of employees:', error);
         throw error;
     }
 };
@@ -67,15 +99,30 @@ async function createNewRole(title, salary, department) {
     }
 };
 
+async function createNewEmployee(first_name, last_name, role, manager) {
+    // TODO: Amend everything below
+    try {
+        const data = await db.promise().query(`SELECT id FROM department WHERE name = ?`, department);
+        const dep_id = data[0][0].id;
+        await db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?)`, [title, salary, dep_id]);
+    } catch (error) {
+        console.error(`Error adding new role, ${title}:`, error);
+        throw error;
+    }
+};
+
 // TODO: Define other async functions for roles, employees, etc
 
 
 module.exports = {
     getAllDepartments,
-    getAllRoles,
-    getAllEmployees,
     listAllDepartments,
+    getAllRoles,
+    listAllRoles,
+    getAllEmployees,
+    listAllEmployees,
     createNewDepartment,
     createNewRole,
+    createNewEmployee,
     // TODO: Other async functions for roles, employees, etc
 }

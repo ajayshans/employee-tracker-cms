@@ -63,9 +63,37 @@ async function addRole() {
 };
 // addEmployee
 async function addEmployee() {
-    const departments = await queries.getAllDepartments();
-    console.log(departments);
+    const roleOptions = await queries.listAllRoles();
+    const managerOptions = await queries.listAllEmployees();
+    const employeeSubAnswer = await inquirer.prompt([{
+        name: 'firstName',
+        type: 'input',
+        message: 'What is the employee\'s first name?'
+    },
+    {
+        name: 'lastName',
+        type: 'input',
+        message: 'What is the employee\'s last name?'
+    },
+    {
+        name: 'role',
+        type: 'list',
+        message: 'What is the employee\'s role?',
+        choices: roleOptions
+    },
+    {
+        name: 'manager',
+        type: 'list',
+        message: 'Who is the employee\'s manager?',
+        choices: managerOptions
+    }]);
+
+    await queries.createNewEmployee(employeeSubAnswer.first_name, employeeSubAnswer.last_name, employeeSubAnswer.role, employeeSubAnswer.manager);
+    console.log(`New employee and details for ${employeeSubAnswer.first_name} ${employeeSubAnswer.last_name} succesfully added to role table`);
+    init();
 };
+
+
 // updateEmployeeRole
 async function updateEmployeeRole() {
     const departments = await queries.getAllDepartments();
