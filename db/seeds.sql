@@ -1,3 +1,5 @@
+-- SQL script for populating initial data
+
 INSERT INTO department (name)
 VALUES ("Legal"),
        ("Finance"),
