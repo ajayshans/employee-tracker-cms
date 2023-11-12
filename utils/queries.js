@@ -1,5 +1,5 @@
 // File containing async database queries
-const db = require('./config/connection.js');
+const db = require('../config/connection.js');
 
 async function getAllDepartments() {
     try {
@@ -9,7 +9,7 @@ async function getAllDepartments() {
         console.error('Error fetching departments:', error);
         throw error;
     }
-}
+};
 
 // TODO: Define other async functions for roles, employees, etc
 

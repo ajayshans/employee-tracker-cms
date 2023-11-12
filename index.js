@@ -2,23 +2,47 @@
 
 // Include packages needed for this application
 const inquirer = require('inquirer');
-const mysql = require('mysql2');
-
-const sequelize = require('./config/connection.js');
 const queries = require('./utils/queries.js')
-
-const sequelize = require('./config/connection.js');
-const consoleTable = require('console.table');
+require('console.table');
 
 
 // Required:
 // viewAllDepartments
+async function viewAllDepartments() {
+    const departments = await queries.getAllDepartments();
+    console.table(departments);
+};
 // viewAllRoles
+async function viewAllRoles() {
+    const departments = await queries.getAllDepartments();
+    console.log(departments);
+};
 // viewAllEmployees
+async function viewAllEmployees() {
+    console.log('test');
+    const departments = await queries.getAllDepartments();
+    console.log(departments);
+};
 // addDepartment
+async function addDepartment() {
+    const departments = await queries.getAllDepartments();
+    console.log(departments);
+};
 // addRole
+async function addRole() {
+    const departments = await queries.getAllDepartments();
+    console.log(departments);
+};
 // addEmployee
+async function addEmployee() {
+    const departments = await queries.getAllDepartments();
+    console.log(departments);
+};
 // updateEmployeeRole
+async function updateEmployeeRole() {
+    const departments = await queries.getAllDepartments();
+    console.log(departments);
+};
 
 // Optional:
 // updateEmployeeManager
@@ -65,10 +89,10 @@ async function init() {
             await addRole();
             break;
         case 'Add an employee':
-            await addRole();
+            await addEmployee();
             break;
         case 'Update an employee role':
-            await addRole();
+            await updateEmployeeRole();
             break;
     }
 }

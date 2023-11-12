@@ -1,5 +1,4 @@
 // File for establishing database connection
-
 const mysql = require('mysql2');
 require('dotenv').config();
 
