@@ -66,7 +66,7 @@ async function addRole() {
 // addEmployee
 async function addEmployee() {
     const roleOptions = await queries.listAllRoles();
-    const managerOptions = await queries.listAllEmployees();
+    const managerOptions = await queries.listAllEmployees(true);
     const employeeSubAnswer = await inquirer.prompt([{
         name: 'firstName',
         type: 'input',

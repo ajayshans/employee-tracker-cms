@@ -63,12 +63,16 @@ async function getAllEmployees() {
     }
 };
 
-async function listAllEmployees() {
+async function listAllEmployees(includeNone) {
     try {
         const data = await db.promise().query(`SELECT CONCAT(first_name, ' ', last_name) AS full_name FROM employee`);
         const employeesObject = data[0];
-
-        const employeeOptions = ['None'];
+        var employeeOptions;
+        if (includeNone){
+            employeeOptions = ['None'];
+        } else{
+            employeeOptions = [];
+        };
         for (let i = 0; i < employeesObject.length; i++) {
             employeeOptions.push(employeesObject[i].full_name);
         }
@@ -118,7 +122,9 @@ async function createNewEmployee(first_name, last_name, role, manager) {
 };
 
 // TODO: Define other async functions for roles, employees, etc
-
+async function updateEmployeeRole() {
+    // TODO:
+};
 
 module.exports = {
     getAllDepartments,
