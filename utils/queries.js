@@ -31,6 +31,15 @@ async function getAllEmployees() {
     }
 };
 
+async function createNewDepartment(department) {
+    try {
+        await db.promise().query(`INSERT INTO department (name) VALUES (?)`, department);
+    } catch (error) {
+        console.error(`Error adding new department, ${department}:`, error);
+        throw error;
+    }
+};
+
 // TODO: Define other async functions for roles, employees, etc
 
 
@@ -38,5 +47,6 @@ module.exports = {
     getAllDepartments,
     getAllRoles,
     getAllEmployees,
+    createNewDepartment,
     // TODO: Other async functions for roles, employees, etc
 }

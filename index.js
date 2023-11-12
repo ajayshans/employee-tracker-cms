@@ -27,8 +27,15 @@ async function viewAllEmployees() {
 };
 // addDepartment
 async function addDepartment() {
-    const departments = await queries.getAllDepartments();
-    console.log(departments);
+    const subAnswer = await inquirer.prompt({
+        name: 'newDepartment',
+        type: 'input',
+        message: 'What is the name of the department?'
+    });
+
+    await queries.createNewDepartment(subAnswer.newDepartment);
+    console.log(`New department, ${subAnswer.newDepartment}, succesfully added to department table`);
+    init();
 };
 // addRole
 async function addRole() {
