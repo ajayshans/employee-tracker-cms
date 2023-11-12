@@ -13,10 +13,20 @@ async function getAllDepartments() {
 
 async function getAllRoles() {
     try {
-        const [rows] = await db.promise().query(`SELECT role.id, role.title, department.name, role.salary FROM role LEFT JOIN department ON department.id = role.department_id`);
+        const [rows] = await db.promise().query(`SELECT role.id, role.title, department.name AS department, role.salary FROM role LEFT JOIN department ON department.id = role.department_id`);
         return rows;
     } catch (error) {
         console.error('Error fetching roles:', error);
+        throw error;
+    }
+};
+
+async function getAllEmployees() {
+    try {
+        const [rows] = await db.promise().query(`SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary FROM employee LEFT JOIN role ON role.id = employee.role_id LEFT JOIN department ON role.department_id = department.id`);
+        return rows;
+    } catch (error) {
+        console.error('Error fetching employees:', error);
         throw error;
     }
 };
@@ -27,5 +37,6 @@ async function getAllRoles() {
 module.exports = {
     getAllDepartments,
     getAllRoles,
+    getAllEmployees,
     // TODO: Other async functions for roles, employees, etc
 }

@@ -21,9 +21,9 @@ async function viewAllRoles() {
 };
 // viewAllEmployees
 async function viewAllEmployees() {
-    console.log('test');
-    const departments = await queries.getAllDepartments();
-    console.log(departments);
+    const employees = await queries.getAllEmployees();
+    console.table(employees);
+    init();
 };
 // addDepartment
 async function addDepartment() {
