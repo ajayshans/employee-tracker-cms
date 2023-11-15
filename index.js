@@ -34,7 +34,6 @@ async function addDepartment() {
     });
 
     await queries.createNewDepartment(subAnswer.newDepartment);
-    console.log(`New department, ${subAnswer.newDepartment}, succesfully added to department table`);
     init();
 };
 
@@ -59,7 +58,6 @@ async function addRole() {
     }]);
 
     await queries.createNewRole(roleSubAnswer.title, roleSubAnswer.salary, roleSubAnswer.department);
-    console.log(`New role and details for ${roleSubAnswer.title} succesfully added to role table`);
     init();
 };
 
@@ -91,15 +89,28 @@ async function addEmployee() {
     }]);
 
     await queries.createNewEmployee(employeeSubAnswer.firstName, employeeSubAnswer.lastName, employeeSubAnswer.role, employeeSubAnswer.manager);
-    console.log(`New employee and details for ${employeeSubAnswer.firstName} ${employeeSubAnswer.lastName} succesfully added to employee table`);
     init();
 };
 
 
 // updateEmployeeRole
 async function updateEmployeeRole() {
-    const departments = await queries.getAllDepartments();
-    console.log(departments);
+    const employeeOptions = await queries.listAllEmployees(false);
+    const roleOptions = await queries.listAllRoles();
+    const updateSubAnswer = await inquirer.prompt([{
+        name: 'employee',
+        type: 'list',
+        message: 'Which employee\'s role do you want to update?',
+        choices: employeeOptions
+    },
+    {
+        name: 'role',
+        type: 'list',
+        message: 'Which role do you want to assign the selected employee?',
+        choices: roleOptions
+    }]);
+    await queries.updateEmployeeRole(updateSubAnswer.employee, updateSubAnswer.role);
+    init();
 };
 
 // Optional:

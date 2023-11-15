@@ -70,7 +70,7 @@ async function listAllEmployees(includeNone) {
         var employeeOptions;
         if (includeNone){
             employeeOptions = ['None'];
-        } else{
+        } else {
             employeeOptions = [];
         };
         for (let i = 0; i < employeesObject.length; i++) {
@@ -86,6 +86,7 @@ async function listAllEmployees(includeNone) {
 async function createNewDepartment(department) {
     try {
         await db.promise().query(`INSERT INTO department (name) VALUES (?)`, department);
+        console.log(`New department, ${department}, succesfully added to department table`);
     } catch (error) {
         console.error(`Error adding new department, ${department}:`, error);
         throw error;
@@ -97,6 +98,7 @@ async function createNewRole(title, salary, department) {
         const data = await db.promise().query(`SELECT id FROM department WHERE name = ?`, department);
         const dep_id = data[0][0].id;
         await db.promise().query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, [title, salary, dep_id]);
+        console.log(`New role and details for ${title} succesfully added to role table`);
     } catch (error) {
         console.error(`Error adding new role, ${title}:`, error);
         throw error;
@@ -115,15 +117,23 @@ async function createNewEmployee(first_name, last_name, role, manager) {
             manager_id = manager_data[0][0].id;
         };
         await db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, [first_name, last_name, role_id, manager_id]);
+        console.log(`New employee and details for ${first_name} ${last_name} succesfully added to employee table`);
     } catch (error) {
         console.error(`Error adding new employee, ${first_name} ${last_name}:`, error);
         throw error;
     }
 };
 
-// TODO: Define other async functions for roles, employees, etc
-async function updateEmployeeRole() {
-    // TODO:
+async function updateEmployeeRole(employee, role) {
+    try {
+        const role_data = await db.promise().query(`SELECT id FROM role WHERE title = ?`, role);
+        const role_id = role_data[0][0].id;
+        await db.promise().query(`UPDATE employee SET role_id = ? WHERE CONCAT(first_name, ' ', last_name) = ?`, [role_id, employee]);
+        console.log(`Role for employee, ${employee}, succesfully updated to ${role} in employee table`);
+    } catch (error) {
+        console.error(`Error updating employee role to ${role} for ${employee}:`, error);
+        throw error;
+    }
 };
 
 module.exports = {
@@ -136,5 +146,6 @@ module.exports = {
     createNewDepartment,
     createNewRole,
     createNewEmployee,
+    updateEmployeeRole
     // TODO: Other async functions for roles, employees, etc
 }
