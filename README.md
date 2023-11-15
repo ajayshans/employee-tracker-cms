@@ -14,7 +14,10 @@ The purpose of this project is to create a node JS, Inquirer and MySQL content m
 - Ensure update employee role prompts users to select employee and update their new role in database
 
 ## Node Application Preview
+![Application Screenshot 1](images/employee-cms-application-1.png)
+![Application Screenshot 2](images/employee-cms-application-2.png)
+![Application Screenshot 2](images/employee-cms-application-3.png)
 
 ## Submission Requirements
-- [Video Walkthrough](https://drive.google.com/file/d/1y0C-sqCCTear1Ps7oQX80yCBQD1192tB/view)
+- [Video Walkthrough](https://drive.google.com/file/d/1og7njfIBbKPSHY8S5KvHMWx018hHlWZN/view)
 - [GitHub Repo](https://github.com/ajayshans/employee-tracker-cms)
